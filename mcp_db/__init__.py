@@ -1,5 +1,5 @@
 from mcp.server.fastmcp import FastMCP
-from db.repository import DatabaseRepository
+from .db.repository import DatabaseRepository
 import os
 
 def create_server(repository: DatabaseRepository) -> FastMCP:
@@ -30,8 +30,8 @@ def create_server(repository: DatabaseRepository) -> FastMCP:
 
 def main():
     from dotenv import load_dotenv
-    from db.sqlite_repository import SqliteRepository
-    from db.mysql_repository import MysqlRepository
+    from .db.sqlite_repository import SqliteRepository
+    from .db.mysql_repository import MysqlRepository
 
     load_dotenv()
 

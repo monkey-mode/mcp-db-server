@@ -12,10 +12,12 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server implem
 
 ## Project Structure
 
-- `server.py`: Main entry point for the MCP server.
-- `db/`: Contains the Repository interface and implementations (`sqlite_repository.py`, `mysql_repository.py`).
-- `seed.py`: Utility script to populate the database (since the server itself is read-only).
+- `mcp_db/`: Main Python package for the MCP server.
+  - `__init__.py`: Entry point and server initialization.
+  - `db/`: Repository implementations (`sqlite_repository.py`, `mysql_repository.py`).
+- `seed.py`: Utility script to populate the database (write access).
 - `Makefile`: Automation for common tasks.
+- `pyproject.toml`: Package configuration and dependencies.
 
 ## Quick Start
 
