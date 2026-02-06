@@ -21,4 +21,4 @@ dependencies = [
 ]
 
 [project.scripts]
-mcp-db-server = "mcp_db:main"
+mcp-db-server = "mcp_db_server:main"

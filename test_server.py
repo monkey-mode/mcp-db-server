@@ -1,7 +1,7 @@
 import unittest
 import os
-from mcp_db import create_server, main as server_main
-from mcp_db.db.sqlite_repository import SqliteRepository
+from mcp_db_server import create_server, main as server_main
+from mcp_db_server.db.sqlite_repository import SqliteRepository
 from seed import init_db, DB_PATH
 
 class TestDataBaseMCP(unittest.TestCase):
