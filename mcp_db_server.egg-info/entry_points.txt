@@ -1,0 +1,2 @@
+[console_scripts]
+mcp-db-server = server:main
