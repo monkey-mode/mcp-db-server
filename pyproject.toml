@@ -21,4 +21,4 @@ dependencies = [
 ]
 
 [project.scripts]
-mcp-db-server = "server:main"  # Assuming we refactor server.py to have a main() function exposed
+mcp-db-server = "mcp_db:main"
