@@ -4,23 +4,25 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server implem
 
 ## Features
 
-- **🛡️ Strict Read-Only**: Enforced at the driver level (e.g., SQLite `?mode=ro`). Write operations (INSERT, UPDATE, DELETE) are blocked by the database engine itself.
+- **🛡️ Strict Read-Only**: Enforced at the driver level (e.g., SQLite `?mode=ro`) or session level (MySQL `SET SESSION TRANSACTION READ ONLY`).
 - **🏗️ Repository Pattern**: Abstracted database access allows for easy extension to other backends (PostgreSQL, MySQL) via Dependency Injection.
 - **⚡ FastMCP**: Built efficiently using the official MCP Python SDK.
+- **🔌 Connection Pooling**: Automatic connection pooling for MySQL using `DBUtils` to ensure performance and reliability.
 - **🔧 Easy Configuration**: Managed via environment variables and Makefiles.
 
 ## Project Structure
 
 - `server.py`: Main entry point for the MCP server.
-- `db/`: Contains the Repository interface and implementations.
+- `db/`: Contains the Repository interface and implementations (`sqlite_repository.py`, `mysql_repository.py`).
 - `seed.py`: Utility script to populate the database (since the server itself is read-only).
 - `Makefile`: Automation for common tasks.
 
 ## Quick Start
 
 ### Prerequisites
-- Python 3.10+
+- Python 3.12+ (managed via `venv`)
 - `make` (optional, but recommended)
+- MySQL Server (optional, if using MySQL backend)
 
 ### 1. Setup
 Use the Makefile to create a virtual environment, install dependencies, and seed a test database:
@@ -39,9 +41,11 @@ cp .env.example .env
 ```
 
 **Key Variables:**
-- `DB_ENGINE`: `sqlite` (Default)
-- `DB_ADDRESS`: Path to db file (for SQLite) or Host URL.
-- `DB_USER` / `DB_PASSWORD`: (For future Postgres support).
+- `DB_ENGINE`: `sqlite` (Default) or `mysql`
+- `DB_ADDRESS`: Path to db file (SQLite) or Host URL (MySQL).
+- `DB_PORT`: Database port (Default: 3306 for MySQL).
+- `DB_USER` / `DB_PASSWORD`: Database credentials (required for MySQL).
+- `DB_SCHEMA`: Database name (required for MySQL).
 
 ### 3. Run the Server
 Start the MCP server:

@@ -1,6 +1,6 @@
 from mcp.server.fastmcp import FastMCP
 from db.repository import DatabaseRepository
-from db.sqlite_repository import SqliteRepository
+import os
 
 def create_server(repository: DatabaseRepository) -> FastMCP:
     mcp = FastMCP("db-server")
@@ -30,14 +30,17 @@ def create_server(repository: DatabaseRepository) -> FastMCP:
 
 if __name__ == "__main__":
     from dotenv import load_dotenv
+    from db.sqlite_repository import SqliteRepository
+    from db.mysql_repository import MysqlRepository
+
     load_dotenv()
 
     # Read config
     db_engine = os.getenv("DB_ENGINE", "sqlite")
-    # For SQLite, address is the file path
     db_address = os.getenv("DB_ADDRESS", "test.db")
+    db_port = int(os.getenv("DB_PORT", 3306))
     
-    # Credentials (unused for SQLite but ready for Postgres)
+    # Credentials (unused for SQLite)
     db_user = os.getenv("DB_USER")
     db_password = os.getenv("DB_PASSWORD")
     db_schema = os.getenv("DB_SCHEMA")
@@ -46,8 +49,14 @@ if __name__ == "__main__":
         repo = None
         if db_engine.lower() == "sqlite":
             repo = SqliteRepository(db_address)
-        # elif db_engine.lower() == "postgres":
-        #     repo = PostgresRepository(db_address, db_user, db_password, db_schema)
+        elif db_engine.lower() == "mysql":
+             repo = MysqlRepository(
+                 host=db_address,
+                 user=db_user,
+                 password=db_password,
+                 database=db_schema,
+                 port=db_port
+             )
         else:
             raise ValueError(f"Unsupported DB_ENGINE: {db_engine}")
 
