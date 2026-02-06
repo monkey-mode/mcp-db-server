@@ -28,7 +28,7 @@ def create_server(repository: DatabaseRepository) -> FastMCP:
         
     return mcp
 
-if __name__ == "__main__":
+def main():
     from dotenv import load_dotenv
     from db.sqlite_repository import SqliteRepository
     from db.mysql_repository import MysqlRepository
@@ -64,3 +64,6 @@ if __name__ == "__main__":
         mcp.run()
     except Exception as e:
         print(f"Error starting server: {e}")
+
+if __name__ == "__main__":
+    main()

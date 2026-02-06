@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-db-server"
+version = "0.1.0"
+description = "MCP Database Server with read-only access"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+  {name = "User", email = "user@example.com"}
+]
+dependencies = [
+    "mcp",
+    "python-dotenv",
+    "pymysql",
+    "cryptography",
+    "DBUtils"
+]
+
+[project.scripts]
+mcp-db-server = "server:main"  # Assuming we refactor server.py to have a main() function exposed
