@@ -29,14 +29,29 @@ def create_server(repository: DatabaseRepository) -> FastMCP:
     return mcp
 
 if __name__ == "__main__":
-    # Default to SQLite for standalone run
-    # In a real app, you might parse args or env vars to choose repository
-    db_path = "test.db"
+    from dotenv import load_dotenv
+    load_dotenv()
+
+    # Read config
+    db_engine = os.getenv("DB_ENGINE", "sqlite")
+    # For SQLite, address is the file path
+    db_address = os.getenv("DB_ADDRESS", "test.db")
+    
+    # Credentials (unused for SQLite but ready for Postgres)
+    db_user = os.getenv("DB_USER")
+    db_password = os.getenv("DB_PASSWORD")
+    db_schema = os.getenv("DB_SCHEMA")
+
     try:
-        repo = SqliteRepository(db_path)
+        repo = None
+        if db_engine.lower() == "sqlite":
+            repo = SqliteRepository(db_address)
+        # elif db_engine.lower() == "postgres":
+        #     repo = PostgresRepository(db_address, db_user, db_password, db_schema)
+        else:
+            raise ValueError(f"Unsupported DB_ENGINE: {db_engine}")
+
         mcp = create_server(repo)
         mcp.run()
-    except FileNotFoundError:
-        print(f"Error: Database file '{db_path}' not found. Please run 'seed.py' first.")
     except Exception as e:
         print(f"Error starting server: {e}")

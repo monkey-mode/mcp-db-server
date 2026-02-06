@@ -62,12 +62,6 @@ class SqliteRepository(DatabaseRepository):
         normalized_query = query.strip().upper()
         if not normalized_query.startswith("SELECT"):
             return "Error: Only SELECT queries are allowed."
-        
-        # Double check forbidden keywords (defense in depth)
-        forbidden = ["INSERT", "UPDATE", "DELETE", "DROP", "ALTER", "TRUNCATE", "REPLACE"]
-        for word in forbidden:
-            if word in normalized_query:
-                return f"Error: Query contains forbidden keyword '{word}'."
 
         try:
             conn = self._get_connection()

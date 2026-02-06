@@ -52,10 +52,18 @@ class TestDataBaseMCP(unittest.TestCase):
         self.assertIn("Alice Smith", result)
         
     def test_repository_forbidden(self):
-        forbidden_queries = ["INSERT INTO users ...", "DELETE FROM users"]
+        forbidden_queries = ["INSERT INTO users (name, email) VALUES ('X', 'y')", "DELETE FROM users"]
         for query in forbidden_queries:
             result = self.repo.read_query(query)
-            self.assertTrue(result.startswith("Error"))
+            # It might be blocked by "Only SELECT..." OR "Security Error" (if it got past check)
+            self.assertTrue("Error" in result or "Security Error" in result, f"Failed to block: {result}")
+
+    def test_repository_allowed_forbidden_words(self):
+        """Test that we can now use words like INSERT/UPDATE in a valid SELECT."""
+        # This would have failed with the old keyword check
+        result = self.repo.read_query("SELECT 'INSERT', 'UPDATE'")
+        self.assertIn("INSERT", result)
+        self.assertIn("UPDATE", result)
 
     def test_repository_readonly_driver_enforcement(self):
         # Similar to previous test, but utilizing the repository's internal connection logic
